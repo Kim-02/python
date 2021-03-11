@@ -7,7 +7,6 @@ import datetime
 from discord.utils import get
 import os
 #디스코드 토큰  icon_url= 'https://newsimg.hankookilbo.com/cms/articlerelease/2016/12/06/201612061853373206_1.jpg'
-# token = 'ODA0Njc0OTY0MDQ5MjMxOTIy.YBPx9Q.20HpUXUVTVwxtRI2VKex_GpCNSU'
 
 if __name__ == '__main__':
   py_ver = int(f"{sys.version_info.major}{sys.version_info.minor}")
@@ -154,4 +153,4 @@ async def on_ready():
 #크롤링 이벤트
 
 
-app.run(os.environ['token'])
+app.run(os.environ['token'] )
