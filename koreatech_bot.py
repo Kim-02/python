@@ -17,7 +17,7 @@ if __name__ == '__main__':
 app = commands.Bot(command_prefix='!한기대 ')
 now_datetime = datetime.datetime.now()
 user_list = []
-
+user_list_ready = []
 #디스코드 봇 실행 코드
 @app.event
 async def on_ready():
@@ -41,7 +41,7 @@ async def on_ready():
         embed.add_field (name = "주의", value = "추가적인 역할을 다실 경우, 전체 멘션을 통해 언제든지 알람이 울릴 수 있단점을 유의해주세요! ", inline = False)
         embed.add_field (name = "역할종류", value = "솔랭, 자유랭, 내전, -메- 등등 원하는 역할이 있으시다면 말씀해주세요.", inline = False)
         embed.add_field (name = "기타 명령어들", value = "앞으로 추가할 예정입니다", inline = False)
-        embed.set_footer (text = "bot version : 1.2.1")
+        embed.set_footer (text = "bot version : 1.3.6")
         await ctx.send (embed=embed)
 
     #내전 임베드 생성
@@ -63,26 +63,33 @@ async def on_ready():
         if user.bot ==1:
             return None
         if str(reation.emoji) == "🟢":
-            for create_list in user_list:
-                if str(user.name) in create_list:
-                    user_list.remove(user.name)
-                    await reation.message.channel.send(user.name +" 이미 참가하셨습니다 \n 나가시려면 🔴를 눌러주세요")
-                    break
+            if len(user_list) >= 10:
+                user_list.remove(user.name)
+                user_list_ready.insert(10, user.name)
+                await reation.message.channel.send(user.name+"님은 대기 인원입니다.")
+            else:
+                for create_list in user_list:
+                    if str(user.name) in create_list:
+                        user_list.remove(user.name)
+                        await reation.message.channel.send(user.name +" 이미 참가하셨습니다 \n 나가시려면 🔴를 눌러주세요")
+                        break
             user_list.append(user.name)
-            await reation.message.channel.send("현재인원"+"("+str(len(user_list))+"/10)")
+            await reation.message.channel.send("현재인원("+str(len(user_list[:10]))+"/10)")
         if str(reation.emoji) == "🔴":
             for create_list in user_list:
                 if str(user.name) in create_list:
                     user_list.remove(user.name)
-                    await reation.message.channel.send(user.name+"님이 신청에서 나가셨습니다. 현재인원"+"("+str(len(user_list))+"/10)")
+                    await reation.message.channel.send(user.name+"님이 신청에서 나가셨습니다. 현재인원"+"("+str(len(user_list[:10]))+"/10)")
                     break
 
     #내전 참가 신청확인
     @app.command()
     async def 내전참가확인(ctx):
         embed=discord.Embed(title = "내전 참가 인원입니다", description = str(now_datetime)+"기준", color = discord.Color.blue())
-        embed.add_field (name = "참가", value = '%s' %user_list, inline = True)
-        embed.add_field (name = "현재인원", value= len(user_list), inline=False)
+        embed.add_field (name = "참가", value = '%s' %user_list[:10], inline = True)
+        embed.add_field (name = "현재인원", value= len(user_list[:10]), inline=False)
+        embed.add_field (name = "대기", value = '%s' %user_list[10:], inline= True)
+        embed.add_field (name = "대기인원", value= len(user_list[10:]), inline= False)
         await ctx.send (embed=embed)
 
     #내전 리스트 초기화
@@ -92,6 +99,11 @@ async def on_ready():
         embed.add_field (name = "다시만드려면...", value = '!한기대 내전모집 을 쳐주세요', inline = True)
         user_list.clear()
         await ctx.send(embed=embed)
+
+#자유 모집 포스팅
+
+    #자유 모집 포스팅 만들기
+    
 #역할 자동 배정 안내 임베드
     @app.command()
     async def 역할안내(ctx):
@@ -149,6 +161,8 @@ async def on_ready():
         member = member or ctx.message.author
         await member.add_roles(get(ctx.guild.roles, name="자랭"))
         await ctx.channel.send(str(member)+"에게 자랭 역할이 적용되었습니다.")
+    
+#크롤링 이벤트
     
 #크롤링 이벤트
 
