@@ -109,7 +109,7 @@ async def on_ready():
     async def 역할안내(ctx):
         embed=discord.Embed(title = "자동 역할배정 안내입니다", description = "!을 붙인 뒤에 원하는 역할을 띄어쓰기 없이 쓰면됩니다", color = discord.Color.purple())
         embed.set_author(name= ctx.author.display_name, icon_url= ctx.author.avatar_url)
-        embed.add_field (name = "현재 있는 역할", value = "13일의 금요일, 레식, 내전, 스터디, 영화, 솔랭, 자랭", inline = True)
+        embed.add_field (name = "현재 있는 역할", value = "13일의 금요일, 레식, 내전, 스터디, 영화, 솔랭, 자랭, 디스코드게임", inline = True)
         embed.set_footer (text = str(now_datetime)+ "에 생성됨")
         await ctx.send (embed=embed)
 #역할 자동 배정 시작 
@@ -161,6 +161,13 @@ async def on_ready():
         member = member or ctx.message.author
         await member.add_roles(get(ctx.guild.roles, name="자랭"))
         await ctx.channel.send(str(member)+"에게 자랭 역할이 적용되었습니다.")
+
+    #디스코드게임 역할 배정
+    @app.command(name="디스코드게임", pass_context=True)
+    async def _HumanRole(ctx, member: discord.Member=None):
+        member = member or ctx.message.author
+        await member.add_roles(get(ctx.guild.roles, name="디스코드게임"))
+        await ctx.channel.send(str(member)+"에게 디스코드게임 역할이 적용되었습니다.")
     
 #크롤링 이벤트
     
