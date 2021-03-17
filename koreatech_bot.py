@@ -4,8 +4,8 @@ import asyncio
 import sys
 from discord.ext.commands import Bot
 import datetime
-from discord.utils import get
 import os
+from discord.utils import get
 #디스코드 토큰  icon_url= 'https://newsimg.hankookilbo.com/cms/articlerelease/2016/12/06/201612061853373206_1.jpg'
 
 if __name__ == '__main__':
@@ -17,14 +17,13 @@ if __name__ == '__main__':
 app = commands.Bot(command_prefix='!한기대 ')
 now_datetime = datetime.datetime.now()
 user_list = []
-user_list_ready = []
 #디스코드 봇 실행 코드
 @app.event
 async def on_ready():
     print('다음으로 로그인 합니다.')
     print(app.user.name)
     print('connection was succesful')
-    await app.change_presence(status=discord.Status.online, activity=None)
+    await app.change_presence(status=discord.Game(name="!한기대 도움"), activity=None)
 
 #임베드 코드
     @app.command()
@@ -55,6 +54,7 @@ async def on_ready():
         embed.set_footer (text = str(now_datetime)+ "에 생성됨")
         msg = await ctx.send (embed=embed)
         await msg.add_reaction("🟢")
+        
         await msg.add_reaction("🔴")
 
     #내전 임베드 조작
@@ -65,7 +65,7 @@ async def on_ready():
         if str(reation.emoji) == "🟢":
             if len(user_list) >= 10:
                 user_list.remove(user.name)
-                user_list_ready.insert(10, user.name)
+                user_list.insert(10, user.name)
                 await reation.message.channel.send(user.name+"님은 대기 인원입니다.")
             else:
                 for create_list in user_list:
@@ -74,6 +74,7 @@ async def on_ready():
                         await reation.message.channel.send(user.name +" 이미 참가하셨습니다 \n 나가시려면 🔴를 눌러주세요")
                         break
             user_list.append(user.name)
+            await reation.message.channel.send(str(user.name)+"님이 참가하셨습니다.")
             await reation.message.channel.send("현재인원("+str(len(user_list[:10]))+"/10)")
         if str(reation.emoji) == "🔴":
             for create_list in user_list:
@@ -161,7 +162,7 @@ async def on_ready():
         member = member or ctx.message.author
         await member.add_roles(get(ctx.guild.roles, name="자랭"))
         await ctx.channel.send(str(member)+"에게 자랭 역할이 적용되었습니다.")
-
+    
     #디스코드게임 역할 배정
     @app.command(name="디스코드게임", pass_context=True)
     async def _HumanRole(ctx, member: discord.Member=None):
