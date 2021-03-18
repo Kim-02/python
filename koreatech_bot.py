@@ -171,7 +171,12 @@ async def on_ready():
         await ctx.channel.send(str(member)+"에게 디스코드게임 역할이 적용되었습니다.")
     
 #크롤링 이벤트
-    
+    @app.command()
+    async def 공지사항(ctx):
+        embed=discord.Embed(title = "테스트입니다.", description = "테스트"+str(now_datetime), color = discord.Color.dark_gold())
+        embed.add_field (name = "테스트입니다", value = "[테스트입니다](<https://www.naver.com/>)", inline = True)
+        user_list.clear()
+        await ctx.send(embed=embed)
 #크롤링 이벤트
 
 
