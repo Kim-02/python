@@ -170,11 +170,11 @@ async def on_ready():
         await member.add_roles(get(ctx.guild.roles, name="디스코드게임"))
         await ctx.channel.send(str(member)+"에게 디스코드게임 역할이 적용되었습니다.")
     
-#크롤링 이벤트
+#공지사항 이벤트 출력
     @app.command()
     async def 공지사항(ctx):
-        embed=discord.Embed(title = "테스트입니다.", description = "테스트"+str(now_datetime), color = discord.Color.dark_gold())
-        embed.add_field (name = "테스트입니다", value = "[테스트입니다](<https://www.naver.com/>)", inline = True)
+        embed=discord.Embed(title = "한국기술교육대학교", description = "공지사항", color = discord.Color.light_gray())
+        embed.add_field (name = "링크를 클릭하세요", value = "[일반공지](<https://portal.koreatech.ac.kr/p/STHOME/>)", inline = True)
         user_list.clear()
         await ctx.send(embed=embed)
 #크롤링 이벤트
