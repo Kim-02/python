@@ -63,19 +63,17 @@ async def on_ready():
         if user.bot ==1:
             return None
         if str(reation.emoji) == "🟢":
+            user_list.append(user.name)
+            await reation.message.channel.send(str(user.name)+"님이 참가하셨습니다.")
+            await reation.message.channel.send("현재인원("+str(len(user_list[:10]))+"/10)")
             if len(user_list) >= 10:
                 user_list.remove(user.name)
                 user_list.append(user.name)
                 await reation.message.channel.send(user.name+"님은 대기 인원입니다.")
             else:
-                for create_list in user_list:
-                    if str(user.name) in create_list:
-                        user_list.remove(user.name)
-                        await reation.message.channel.send(user.name +" 이미 참가하셨습니다 \n 나가시려면 🔴를 눌러주세요")
-                        break
-            user_list.append(user.name)
-            await reation.message.channel.send(str(user.name)+"님이 참가하셨습니다.")
-            await reation.message.channel.send("현재인원("+str(len(user_list[:10]))+"/10)")
+                if str(user.name) in user_list:
+                    user_list.remove(user.name)
+                    await reation.message.channel.send(user.name +" 이미 참가하셨습니다 \n 나가시려면 🔴를 눌러주세요")
         if str(reation.emoji) == "🔴":
             for create_list in user_list:
                 if str(user.name) in create_list:
