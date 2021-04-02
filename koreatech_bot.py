@@ -182,13 +182,11 @@ async def on_ready():
     async def 공지사항(ctx):
         embed=discord.Embed(title = "한국기술교육대학교", description = "공지사항", color = discord.Color.light_gray())
         embed.add_field (name = "링크를 클릭하세요", value = "[일반공지](<https://portal.koreatech.ac.kr/p/STHOME/>)", inline = True)
-        user_list.clear()
         await ctx.send(embed=embed)
 #테스트 업로드
     @app.command()
     async def  테스트_1(ctx):
-        if ctx.content.startswith("테스트_2"):
-            await ctx.channel.send("성공")
+        await ctx.channel.send("성공")
 
 
 app.run(os.environ['token'] )
