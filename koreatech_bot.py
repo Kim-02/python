@@ -186,7 +186,9 @@ async def on_ready():
 #테스트 업로드
     @app.command()
     async def  테스트_1(ctx):
-        await ctx.channel.send("성공")
+        async def 테스트_2(ctx):
+            await ctx.channel.send("성공2")
+        await ctx.channel.split()[1]
 
 
 app.run(os.environ['token'] )
