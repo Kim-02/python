@@ -187,5 +187,6 @@ async def on_ready():
     @app.command()
     async def  테스트_1(ctx):
         msg_1 = ctx.split()
+        await ctx.send(msg_1[1])
 
 app.run(os.environ['token'] )
