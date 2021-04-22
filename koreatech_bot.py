@@ -6,6 +6,7 @@ from discord.ext.commands import Bot
 import datetime
 import os
 from discord.utils import get
+import random
 #디스코드 토큰  icon_url= 'https://newsimg.hankookilbo.com/cms/articlerelease/2016/12/06/201612061853373206_1.jpg'
 
 if __name__ == '__main__':
@@ -17,6 +18,7 @@ if __name__ == '__main__':
 app = commands.Bot(command_prefix='!한기대 ')
 now_datetime = datetime.datetime.now()
 user_list = []
+team_list = ["1팀","2팀","3팀","4팀"]
 #디스코드 봇 실행 코드
 @app.event
 async def on_ready():
@@ -82,6 +84,14 @@ async def on_ready():
                     user_list.remove(user.name)
                     await reation.message.channel.send(user.name+"님이 신청에서 나가셨습니다. 현재인원"+"("+str(len(user_list[:10]))+"/10)")
                     break
+    #팀 랜덤 배정
+    @app.command()
+    async def 랜덤팀(ctx):
+        random.shuffle(team_list)
+        embed=discord.Embed(title = "팀 랜덤 배정입니다.", description = " ", color = discord.Color.greyple())
+        embed.add_field(name="1경기", value="{}vs{}".format(team_list[0],team_list[1]),inline= True)
+        embed.add_field(name="2경기", value="{}vs{}".format(team_list[2],team_list[3]),inline= True)
+        await ctx.send (embed=embed)
 
     #내전 참가 신청확인
     @app.command()
