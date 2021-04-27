@@ -186,6 +186,12 @@ async def on_ready():
         member = member or ctx.message.author
         await member.add_roles(get(ctx.guild.roles, name="격전"))
         await ctx.channel.send(str(member)+"에게 격전 역할이 적용되었습니다.")
+    #발로란트 역할 배정
+    @app.command(name="발로란트", pass_context=True)
+    async def _HumanRole(ctx, member: discord.Member=None):
+        member = member or ctx.message.author
+        await member.add_roles(get(ctx.guild.roles, name="발로란트"))
+        await ctx.channel.send(str(member)+"에게 발로란트 역할이 적용되었습니다.")
     
 #공지사항 이벤트 출력
     @app.command()
