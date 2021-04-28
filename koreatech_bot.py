@@ -63,7 +63,7 @@ async def on_ready():
                 await msg.add_reaction("🟥")
                 await msg.add_reaction("🟨")
                 await msg.add_reaction("❌")
-                if str(reaction_2) == "❌":
+                if str(reaction_2) == "❌" and reaction_2.message.id == msg.id:
                     await msg.delete()
             except asyncio.TimeoutError:
                 await ctx.send("시간이 초과되었습니다.")
