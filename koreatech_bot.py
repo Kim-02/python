@@ -19,6 +19,8 @@ app = commands.Bot(command_prefix='!한기대 ')
 now_datetime = datetime.datetime.now()
 user_list = []
 team_list = ["1팀","2팀","3팀","4팀"]
+user_list_alter = []
+i =1
 #디스코드 봇 실행 코드
 @app.event
 async def on_ready():
@@ -29,87 +31,70 @@ async def on_ready():
 
 #임베드 코드
     @app.command()
-    async def 도움(ctx):
-        embed=discord.Embed(title = "안녕하세요! 한기대 게임 디스코드입니다!", description = "과별로 역할을 나눠서 운영하고있습니다!"
-        "\n 역할배정 방에 들어가셔서 원하시는 역할을 말씀해 주시면 달아드리겠습니다"
-        "\n 역할의 종류는 아래 설명을 읽어주세용", 
-        color = discord.Color.blue())
-        
-        embed.set_author(name= "한기대봇")
-        embed.add_field (name = "기본역할", value = "기본적인 역할입니다! ", inline = True)
-        embed.add_field (name = "과별로 선택하시면됩니다", value = "ex)메카, 컴공, 에신화 ... ", inline = True)
-        embed.add_field (name = "추가역할", value = "추가적인 역할입니다. 다셔도되고 안다셔도 상관없습니다!", inline = False)
-        embed.add_field (name = "주의", value = "추가적인 역할을 다실 경우, 전체 멘션을 통해 언제든지 알람이 울릴 수 있단점을 유의해주세요! ", inline = False)
-        embed.add_field (name = "역할종류", value = "솔랭, 자유랭, 내전, -메- 등등 원하는 역할이 있으시다면 말씀해주세요.", inline = False)
-        embed.add_field (name = "기타 명령어들", value = "앞으로 추가할 예정입니다", inline = False)
-        embed.set_footer (text = "bot version : 1.3.6")
-        await ctx.send (embed=embed)
-
-    #내전 임베드 생성
-
-    @app.command()
-    async def 내전모집(ctx):
-        embed=discord.Embed(title = "내전 모집 포스팅을 시작하셨습니다!", description = "아래 🟢와 🔴를 통해 참여 여부를 표시하시면됩니다", color = discord.Color.red())
+    async def 내전모집시작(ctx,*,time_set):
+        embed=discord.Embed(title = "내전 모집 포스팅을 시작하셨습니다!", description = f"시작시간 {time_set}", color = discord.Color.random())
         embed.set_author(name= ctx.author.display_name, icon_url= ctx.author.avatar_url)
-        embed.add_field (name = "인원 제한", value = "10명", inline = True)
-        embed.add_field (name = "명령어", value = "!한기대 내전모집, 내전참가확인, 내전리스트초기화", inline = True)
+        embed.add_field (name = "현재 인원", value = user_list, inline = False)
+        embed.add_field (name = "미확정 인원", value = user_list_alter, inline = False)
+        embed.add_field (name = "명령어", value = "!한기대 내전모집, 내전모집종료", inline = False)
         embed.set_footer (text = str(now_datetime)+ "에 생성됨")
         msg = await ctx.send (embed=embed)
-        await msg.add_reaction("🟢")
+        await msg.add_reaction("🟩")
+        await msg.add_reaction("🟥")
+        await msg.add_reaction("🟨")
         
-        await msg.add_reaction("🔴")
-
-    #내전 임베드 조작
+        def check_emoji_1(reaction_2, user_2):
+            return reaction_2.emoji == "🟩" or reaction_2.emoji == "🟥" or reaction_2.emoji == "🟨" and user_2.bot == False
+        while i == 1:
+            try:
+                reaction_2, user_2 = await app.wait_for(event='reaction_add', check=check_emoji_1)
+                await msg.delete()
+                embed=discord.Embed(title = "내전 모집 포스팅을 시작하셨습니다!", description = f"시작시간 {time_set}", color = discord.Color.random())
+                embed.set_author(name= ctx.author.display_name, icon_url= ctx.author.avatar_url)
+                embed.add_field (name = "현재 인원", value = user_list, inline = False)
+                embed.add_field (name = "미확정 인원", value = user_list_alter, inline = False)
+                embed.add_field (name = "명령어", value = "!한기대 내전모집, 내전모집종료", inline = False)
+                embed.set_footer (text = str(now_datetime)+ "에 생성됨")
+                msg = await ctx.send (embed=embed)
+                await msg.add_reaction("🟩")
+                await msg.add_reaction("🟥")
+                await msg.add_reaction("🟨")
+            except asyncio.TimeoutError:
+                await ctx.send("시간이 초과되었습니다.")
+                return
     @app.event
     async def on_reaction_add(reation, user):
         if user.bot ==1:
             return None
-        if str(reation.emoji) == "🟢":
+        if str(reation.emoji) == "🟩":
             if str(user.name) not in user_list:
                 user_list.append(user.name)
-                await reation.message.channel.send(str(user.name)+"님이 참가하셨습니다.")
-                await reation.message.channel.send("현재인원("+str(len(user_list[:10]))+"/10)")
             else:
                 if len(user_list) >= 10:
                     user_list.remove(user.name)
-                    user_list.append(user.name)
-                    await reation.message.channel.send(user.name+"님은 대기 인원입니다.")
-                else:
-                    if str(user.name) in user_list:
-                        user_list.remove(user.name)
-                        await reation.message.channel.send(user.name +" 이미 참가하셨습니다 \n 나가시려면 🔴를 눌러주세요")
-        if str(reation.emoji) == "🔴":
-            for create_list in user_list:
-                if str(user.name) in create_list:
-                    user_list.remove(user.name)
-                    await reation.message.channel.send(user.name+"님이 신청에서 나가셨습니다. 현재인원"+"("+str(len(user_list[:10]))+"/10)")
-                    break
-    #팀 랜덤 배정
+                    user_list_alter.append(user.name)
+                    await reation.message.channel.send(f"인원이 가득 차 참여하실 수 없습니다. {user.name}님은 대기인원입니다.")
+        if str(reation.emoji) == "🟥":
+            if str(user.name) in user_list:
+                user_list.remove(user.name)
+            if str(user.name) in user_list_alter:
+                user_list_alter.remove(user.name)
+        if str(reation.emoji) == "🟨":
+            if str(user.name) in user_list:
+                user_list.remove(user.name)
+                user_list_alter.append(user.name)
+                await reation.message.channel.send(f"{user.name}님이 참가에서 미확정으로 변경하였습니다.")
+            elif str(user.name) not in user_list_alter:
+                user_list_alter.append(user.name)
+            else:
+                pass
     @app.command()
-    async def 랜덤팀(ctx):
-        random.shuffle(team_list)
-        embed=discord.Embed(title = "팀 랜덤 배정입니다.", description = " ", color = discord.Color.greyple())
-        embed.add_field(name="1경기", value="{}vs{}".format(team_list[0],team_list[1]),inline= True)
-        embed.add_field(name="2경기", value="{}vs{}".format(team_list[2],team_list[3]),inline= True)
+    async def 내전모집종료(ctx):
+        embed=discord.Embed(title = "내전 모집 포스팅을 종료합니다", description = f"다시 만드려면 !한기대 내전모집시작을 해주세요", color = discord.Color.random())
+        embed.set_author(name= ctx.author.display_name, icon_url= ctx.author.avatar_url)
         await ctx.send (embed=embed)
-
-    #내전 참가 신청확인
-    @app.command()
-    async def 내전참가확인(ctx):
-        embed=discord.Embed(title = "내전 참가 인원입니다", description = str(now_datetime)+"기준", color = discord.Color.blue())
-        embed.add_field (name = "참가", value = '%s' %user_list[:10], inline = True)
-        embed.add_field (name = "현재인원", value= len(user_list[:10]), inline=False)
-        embed.add_field (name = "대기", value = '%s' %user_list[10:], inline= True)
-        embed.add_field (name = "대기인원", value= len(user_list[10:]), inline= False)
-        await ctx.send (embed=embed)
-
-    #내전 리스트 초기화
-    @app.command()
-    async def 내전리스트초기화(ctx):
-        embed=discord.Embed(title = "초기화되었습니다!", description = "초기화 시간"+str(now_datetime), color = discord.Color.blurple())
-        embed.add_field (name = "다시만드려면...", value = '!한기대 내전모집 을 쳐주세요', inline = True)
-        user_list.clear()
-        await ctx.send(embed=embed)
+        user_list_alter.clear()
+        user_list_alter.clear()
 
 #자유 모집 포스팅
 
@@ -199,10 +184,5 @@ async def on_ready():
         embed=discord.Embed(title = "한국기술교육대학교", description = "공지사항", color = discord.Color.light_gray())
         embed.add_field (name = "링크를 클릭하세요", value = "[일반공지](<https://portal.koreatech.ac.kr/p/STHOME/>)", inline = True)
         await ctx.send(embed=embed)
-#테스트 업로드
-    @app.command()
-    async def  테스트_1(ctx):
-        msg_1 = ctx.split()
-        await ctx.send(msg_1[1])
 
 app.run(os.environ['token'] )
