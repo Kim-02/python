@@ -82,12 +82,12 @@ async def on_ready():
             elif str(user.name) in user_list_alter:
                 user_list_alter.remove(user.name)
                 user_list.append(user.name)
-                await ctx.send(f"{user.name}님이 미확정에서 참가로 변경하셨습니다.")
+                await reation.message.channel.send(f"{user.name}님이 미확정에서 참가로 변경하셨습니다.")
             else:
                 if str(user.name) not in user_list:
                     user_list.append(user.name)
                 else:
-                    await ctx.send(f"{user.name}님은 이미 참가하셨습니다.")
+                    await reation.message.channel.send(f"{user.name}님은 이미 참가하셨습니다.")
                     pass
         if str(reation.emoji) == "🟥":
             if str(user.name) in user_list:
