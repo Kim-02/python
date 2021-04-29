@@ -63,8 +63,10 @@ async def on_ready():
                 await msg.add_reaction("🟥")
                 await msg.add_reaction("🟨")
                 await msg.add_reaction("❌")
-                if str(reaction_2) == "❌" and reaction_2.message.id == msg.id:
+                if str(reaction_2) == "❌":
                     await msg.delete()
+                    user_list.clear()
+                    user_list_alter.clear()
             except asyncio.TimeoutError:
                 await ctx.send("시간이 초과되었습니다.")
                 return
@@ -73,13 +75,20 @@ async def on_ready():
         if user.bot ==1:
             return None
         if str(reation.emoji) == "🟩":
-            if str(user.name) not in user_list:
+            if len(user_list) >= 10:
+                user_list.remove(user.name)
+                user_list_alter.append(user.name)
+                await reation.message.channel.send(f"인원이 가득 차 참여하실 수 없습니다. {user.name}님은 대기인원입니다.")
+            elif str(user.name) in user_list_alter:
+                user_list_alter.remove(user.name)
                 user_list.append(user.name)
+                await ctx.send(f"{user.name}님이 미확정에서 참가로 변경하셨습니다.")
             else:
-                if len(user_list) >= 10:
-                    user_list.remove(user.name)
-                    user_list_alter.append(user.name)
-                    await reation.message.channel.send(f"인원이 가득 차 참여하실 수 없습니다. {user.name}님은 대기인원입니다.")
+                if str(user.name) not in user_list:
+                    user_list.append(user.name)
+                else:
+                    await ctx.send(f"{user.name}님은 이미 참가하셨습니다.")
+                    pass
         if str(reation.emoji) == "🟥":
             if str(user.name) in user_list:
                 user_list.remove(user.name)
@@ -95,13 +104,13 @@ async def on_ready():
             else:
                 pass
 #내전 모집 종료 코드
-    @app.command()
-    async def 내전모집종료(ctx):
-        embed=discord.Embed(title = "내전 모집 포스팅을 종료합니다", description = f"다시 만드려면 !한기대 내전모집시작을 해주세요", color = discord.Color.random())
-        embed.set_author(name= ctx.author.display_name, icon_url= ctx.author.avatar_url)
-        await ctx.send (embed=embed)
-        user_list_alter.clear()
-        user_list_alter.clear()
+    # @app.command()
+    # async def 내전모집종료(ctx):
+    #     embed=discord.Embed(title = "내전 모집 포스팅을 종료합니다", description = f"다시 만드려면 !한기대 내전모집시작을 해주세요", color = discord.Color.random())
+    #     embed.set_author(name= ctx.author.display_name, icon_url= ctx.author.avatar_url)
+    #     await ctx.send (embed=embed)
+    #     user_list_alter.clear()
+    #     user_list_alter.clear()
 
 #자유 모집 포스팅
 
