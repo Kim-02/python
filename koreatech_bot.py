@@ -30,15 +30,16 @@ async def on_ready():
     print('connection was succesful')
     await app.change_presence(status=discord.Game(name="!한기대 도움"), activity=None)
 
-#임베드 코드
+#롤 내전 모집
     @app.command()
-    async def 내전모집시작(ctx,*,time_set):
+    async def 롤내전모집시작(ctx,*,time_set):
         mention_code = discord.utils.get(ctx.guild.roles, id = 808760114999722014)
-        embed=discord.Embed(title = "내전 모집 포스팅을 시작하셨습니다!", description = f"시작시간 {time_set}", color = discord.Color.random())
+        embed=discord.Embed(title = "롤 내전 모집 포스팅을 시작하셨습니다!", description = f"시작시간 {time_set}", color = discord.Color.random())
         embed.set_author(name= ctx.author.display_name, icon_url= ctx.author.avatar_url)
         embed.add_field (name = "현재 인원", value = user_list, inline = False)
         embed.add_field (name = "미확정 인원", value = user_list_alter, inline = False)
-        embed.add_field (name = "모집이 끝난후...", value = "반드시 ❌를 눌러 모집을 종료 한 후 !한기대 내전모집종료를 입력해주세요.", inline = False)
+        embed.add_field (name = "모집이 끝난후...", value = "반드시 ❌를 눌러 모집을 종료해주세요", inline = False)
+        embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/840823850651877387/840823990360211477/league-of-legends.png")
         embed.set_footer (text = str(now_datetime)+ "에 생성됨")
         msg = await ctx.send (embed=embed)
         await msg.add_reaction("🟩")
@@ -58,6 +59,50 @@ async def on_ready():
                 embed.add_field (name = "현재 인원", value = user_list, inline = False)
                 embed.add_field (name = "미확정 인원", value = user_list_alter, inline = False)
                 embed.add_field (name = "모집이 끝난후...", value = "반드시 ❌를 눌러 종료해주세요.", inline = False)
+                embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/840823850651877387/840823990360211477/league-of-legends.png")
+                embed.set_footer (text = str(now_datetime)+ "에 생성됨")
+                msg = await ctx.send (embed=embed)
+                await msg.add_reaction("🟩")
+                await msg.add_reaction("🟥")
+                await msg.add_reaction("🟨")
+                await msg.add_reaction("❌")
+                if str(reaction_2) == "❌":
+                    await msg.delete()
+                    user_list.clear()
+                    user_list_alter.clear()
+            except asyncio.TimeoutError:
+                await ctx.send("시간이 초과되었습니다.")
+                return
+#발로란트 내전 모집
+    @app.command()
+    async def 발로란트내전모집시작(ctx,*,time_set):
+        mention_code = discord.utils.get(ctx.guild.roles, id = 808760114999722014)
+        embed=discord.Embed(title = "발로란트 내전 모집 포스팅을 시작하셨습니다!", description = f"시작시간 {time_set}", color = discord.Color.random())
+        embed.set_author(name= ctx.author.display_name, icon_url= ctx.author.avatar_url)
+        embed.add_field (name = "현재 인원", value = user_list, inline = False)
+        embed.add_field (name = "미확정 인원", value = user_list_alter, inline = False)
+        embed.add_field (name = "모집이 끝난후...", value = "반드시 ❌를 눌러 모집을 종료해주세요", inline = False)
+        embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/840823850651877387/840824839911637012/valorant.png")
+        embed.set_footer (text = str(now_datetime)+ "에 생성됨")
+        msg = await ctx.send (embed=embed)
+        await msg.add_reaction("🟩")
+        await msg.add_reaction("🟥")
+        await msg.add_reaction("🟨")
+        await msg.add_reaction("❌")
+        await ctx.send(mention_code.mention)
+        
+        def check_emoji_1(reaction_2, user_2):
+            return reaction_2.emoji == "🟩" or reaction_2.emoji == "🟥" or reaction_2.emoji == "🟨" or reaction_2.emoji == "❌" and user_2.bot == False
+        while i == 1:
+            try:
+                reaction_2, user_2 = await app.wait_for(event='reaction_add', check=check_emoji_1)
+                await msg.delete()
+                embed=discord.Embed(title = "내전 모집 포스팅을 시작하셨습니다!", description = f"시작시간 {time_set}", color = discord.Color.random())
+                embed.set_author(name= ctx.author.display_name, icon_url= ctx.author.avatar_url)
+                embed.add_field (name = "현재 인원", value = user_list, inline = False)
+                embed.add_field (name = "미확정 인원", value = user_list_alter, inline = False)
+                embed.add_field (name = "모집이 끝난후...", value = "반드시 ❌를 눌러 종료해주세요.", inline = False)
+                embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/840823850651877387/840824839911637012/valorant.png")
                 embed.set_footer (text = str(now_datetime)+ "에 생성됨")
                 msg = await ctx.send (embed=embed)
                 await msg.add_reaction("🟩")
