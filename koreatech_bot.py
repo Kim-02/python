@@ -68,6 +68,9 @@ async def on_ready():
                 await msg.add_reaction("❌")
                 if str(reaction_2) == "❌":
                     await msg.delete()
+                    await ctx.send(f"{ctx.author.display_name}님이 삭제하셨습니다.")
+                    await ctx.send(f"확정인원은 {user_list}입니다. ")
+                    await ctx.send(f"미확정 인원은 {user_list_alter}입니다.")
                     user_list.clear()
                     user_list_alter.clear()
             except asyncio.TimeoutError:
@@ -111,6 +114,9 @@ async def on_ready():
                 await msg.add_reaction("❌")
                 if str(reaction_2) == "❌":
                     await msg.delete()
+                    await ctx.send(f"{ctx.author.display_name}님이 삭제하셨습니다.")
+                    await ctx.send(f"확정인원은 {user_list}입니다. ")
+                    await ctx.send(f"미확정 인원은 {user_list_alter}입니다.")
                     user_list.clear()
                     user_list_alter.clear()
             except asyncio.TimeoutError:
