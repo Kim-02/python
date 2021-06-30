@@ -1,3 +1,8 @@
 asyncio
 discord.py
 datetime
+bs4
+requests
+urllib3
+pandas
+os
