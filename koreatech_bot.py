@@ -284,7 +284,7 @@ async def on_ready():
         await asyncio.sleep(3)
 
 
-        sample_1 = pd.read_excel('C:\\Users\\curry\\Desktop\\python_Workspace\\text_1.xlsx')
+        sample_1 = pd.read_excel('C:\\Users\\curry\\Desktop\\python_Workspace\\python\\text_1.xlsx')
         embed= discord.Embed(title = "공지사항", description = "공지(<https://portal.koreatech.ac.kr/p/STHOME/>)",color= discord.Color.dark_blue())
         for index in range(len(number)):
             embed.add_field(name = f"{index+1}번",value=sample_1.loc[[index],:],inline=False)
