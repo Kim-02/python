@@ -254,39 +254,39 @@ async def on_ready():
         embed.add_field (name = "링크를 클릭하세요", value = "[일반공지](<https://portal.koreatech.ac.kr/p/STHOME/>)", inline = True)
         await ctx.send(embed=embed)
 
-    @app.command()
-    async def 테스트(ctx):
-        url = f'https://portal.koreatech.ac.kr/ctt/bb/bulletin?b=14&ls=20&ln=1&dm=m'
-        r = requests.get(url,verify=False)
-        requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
-        urllib3.disable_warnings()
+    # @app.command()
+    # async def 테스트(ctx):
+    #     url = f'https://portal.koreatech.ac.kr/ctt/bb/bulletin?b=14&ls=20&ln=1&dm=m'
+    #     r = requests.get(url,verify=False)
+    #     requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
+    #     urllib3.disable_warnings()
 
-        soup = BeautifulSoup(r.content,'html.parser')
+    #     soup = BeautifulSoup(r.content,'html.parser')
 
-        data_info_number = soup.find_all('tr', class_ = "bc-s-post-notice")
-        for info in data_info_number:              #tr테그 중에 클래스가 odd even그리고 td테그를 가진 것들만 집합
-            data = info.find_all("td")
-            num = data[0].text
-            post = data[1].text
-            date_num = data[2].text
-            number.append(num.lstrip().rstrip())
-            title.append(post.rstrip().lstrip())
-            date.append(date_num.rstrip().lstrip())
+    #     data_info_number = soup.find_all('tr', class_ = "bc-s-post-notice")
+    #     for info in data_info_number:              #tr테그 중에 클래스가 odd even그리고 td테그를 가진 것들만 집합
+        #     data = info.find_all("td")
+        #     num = data[0].text
+        #     post = data[1].text
+        #     date_num = data[2].text
+        #     number.append(num.lstrip().rstrip())
+        #     title.append(post.rstrip().lstrip())
+        #     date.append(date_num.rstrip().lstrip())
 
-        fd = pd.DataFrame(
-            {"넘버" : number,
-            "제목":title,
-            "날짜": date
-            }
-        )
+        # fd = pd.DataFrame(
+        #     {"넘버" : number,
+        #     "제목":title,
+        #     "날짜": date
+        #     }
+        # )
 
-        fd.to_excel("text_1.xlsx",index=False)
-        await asyncio.sleep(3)
+        # fd.to_excel("text_1.xlsx",index=False)
+        # await asyncio.sleep(3)
 
 
-        sample_1 = pd.read_excel('C:\\Users\\curry\\Desktop\\python_Workspace\\python\\text_1.xlsx')
-        embed= discord.Embed(title = "공지사항", description = "공지(<https://portal.koreatech.ac.kr/p/STHOME/>)",color= discord.Color.dark_blue())
-        for index in range(len(number)):
-            embed.add_field(name = f"{index+1}번",value=sample_1.loc[[index],:],inline=False)
-        await ctx.send(embed=embed)
+        # sample_1 = pd.read_excel('C:\\Users\\curry\\Desktop\\python_Workspace\\python\\text_1.xlsx')
+        # embed= discord.Embed(title = "공지사항", description = "공지(<https://portal.koreatech.ac.kr/p/STHOME/>)",color= discord.Color.dark_blue())
+        # for index in range(len(number)):
+        #     embed.add_field(name = f"{index+1}번",value=sample_1.loc[[index],:],inline=False)
+        # await ctx.send(embed=embed)
 app.run(os.environ['token'] )
