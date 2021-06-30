@@ -5,4 +5,3 @@ bs4
 requests
 urllib3
 pandas
-os
