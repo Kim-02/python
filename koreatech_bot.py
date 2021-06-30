@@ -273,20 +273,22 @@ async def on_ready():
             title.append(post.rstrip().lstrip())
             date.append(date_num.rstrip().lstrip())
 
-        fd = pd.DataFrame(
-            {"넘버" : number,
-            "제목":title,
-            "날짜": date
-            }
-        )
+        embed= discord.Embed(title = "공지사항", description = number,color= discord.Color.dark_blue())
+        # await ctx.send(embed=embed)
+        # fd = pd.DataFrame(
+        #     {"넘버" : number,
+        #     "제목":title,
+        #     "날짜": date
+        #     }
+        # )
 
-        fd.to_excel("text_1.xlsx",index=False)
-        await asyncio.sleep(3)
+        # fd.to_excel("text_1.xlsx",index=False)
+        # await asyncio.sleep(3)
 
 
-        sample_1 = pd.read_excel('C:\\Users\\curry\\Desktop\\python_Workspace\\python\\text_1.xlsx')
-        embed= discord.Embed(title = "공지사항", description = "공지(<https://portal.koreatech.ac.kr/p/STHOME/>)",color= discord.Color.dark_blue())
-        for index in range(len(number)):
-            embed.add_field(name = f"{index+1}번",value=sample_1.loc[[index],:],inline=False)
-        await ctx.send(embed=embed)
+        # sample_1 = pd.read_excel('C:\\Users\\curry\\Desktop\\python_Workspace\\python\\text_1.xlsx')
+        # embed= discord.Embed(title = "공지사항", description = "공지(<https://portal.koreatech.ac.kr/p/STHOME/>)",color= discord.Color.dark_blue())
+        # for index in range(len(number)):
+        #     embed.add_field(name = f"{index+1}번",value=sample_1.loc[[index],:],inline=False)
+        # await ctx.send(embed=embed)
 app.run(os.environ['token'] )
