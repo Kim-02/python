@@ -254,26 +254,26 @@ async def on_ready():
         embed.add_field (name = "링크를 클릭하세요", value = "[일반공지](<https://portal.koreatech.ac.kr/p/STHOME/>)", inline = True)
         await ctx.send(embed=embed)
 
-    @app.command()
-    async def 테스트(ctx):
-        url = f'https://portal.koreatech.ac.kr/ctt/bb/bulletin?b=14&ls=20&ln=1&dm=m'
-        r = requests.get(url,verify=False)
-        requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
-        urllib3.disable_warnings()
+    # @app.command()
+    # async def 테스트(ctx):
+    #     url = f'https://portal.koreatech.ac.kr/ctt/bb/bulletin?b=14&ls=20&ln=1&dm=m'
+    #     r = requests.get(url,verify=False)
+    #     requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
+    #     urllib3.disable_warnings()
 
-        soup = BeautifulSoup(r.content,'html.parser')
+    #     soup = BeautifulSoup(r.content,'html.parser')
 
-        data_info_number = soup.find_all('tr', class_ = "bc-s-post-notice")
-        for info in data_info_number:              #tr테그 중에 클래스가 odd even그리고 td테그를 가진 것들만 집합
-            data = info.find_all("td")
-            num = data[0].text
-            post = data[1].text
-            date_num = data[2].text
-            number.append(num.lstrip().rstrip())
-            title.append(post.rstrip().lstrip())
-            date.append(date_num.rstrip().lstrip())
+    #     data_info_number = soup.find_all('tr', class_ = "bc-s-post-notice")
+    #     for info in data_info_number:              #tr테그 중에 클래스가 odd even그리고 td테그를 가진 것들만 집합
+    #         data = info.find_all("td")
+    #         num = data[0].text
+    #         post = data[1].text
+    #         date_num = data[2].text
+    #         number.append(num.lstrip().rstrip())
+    #         title.append(post.rstrip().lstrip())
+    #         date.append(date_num.rstrip().lstrip())
 
-        embed= discord.Embed(title = "공지사항", description = number,color= discord.Color.dark_blue())
+    #     embed= discord.Embed(title = "공지사항", description = number,color= discord.Color.dark_blue())
         # await ctx.send(embed=embed)
         # fd = pd.DataFrame(
         #     {"넘버" : number,
