@@ -266,8 +266,10 @@ async def on_ready():
             number.append(num.lstrip().rstrip())
             title.append(post.rstrip().lstrip())
             date.append(date_num.rstrip().lstrip())
-
+        delete_msg = "로딩중.."
+        msg = await ctx.send(delete_msg)
         await asyncio.sleep(3)
+        await msg.delete()
 
         embed= discord.Embed(title = "공지사항", description = "공지(<https://portal.koreatech.ac.kr/p/STHOME/>)",color= discord.Color.dark_blue())
         for index in range(len(number)):
